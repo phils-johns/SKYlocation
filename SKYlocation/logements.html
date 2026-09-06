@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SNtrue — Logements disponibles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --navy: #0F1B2E;
+            --navy-soft: #162843;
+            --ivory: #F8F4EE;
+            --amber: #C77D3A;
+            --amber-soft: #E8A15F;
+            --teal: #2E6B5E;
+            --teal-soft: #5A8C82;
+            --ink: #1D2430;
+            --mute: #5D6773;
+            --line: #E6DCCB;
+            --card: #FFFDFB;
+            --shadow: 0 24px 60px rgba(15, 27, 46, 0.14);
+            --shadow-soft: 0 14px 30px rgba(15, 27, 46, 0.08);
+            --maxw: 1160px;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Work Sans', sans-serif;
+            background: linear-gradient(180deg, #f8f4ee 0%, #f2ece3 100%);
+            color: var(--ink);
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4 {
+            margin: 0;
+            font-family: 'Fraunces', serif;
+        }
+        
+        .wrap {
+            max-width: var(--maxw);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(248, 244, 238, 0.9);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(15, 27, 46, 0.08);
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Fraunces', serif;
+        }
+        
+        .logo span {
+            color: var(--teal);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        
+        .nav-links a {
+            opacity: 0.8;
+        }
+        
+        .nav-links a:hover {
+            opacity: 1;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 22px;
+            border-radius: 999px;
+            font-weight: 700;
+            transition: transform .18s ease;
+            box-shadow: 0 10px 24px rgba(15, 27, 46, 0.08);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--teal) 0%, var(--teal-soft) 100%);
+            color: #fff;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--amber) 0%, var(--amber-soft) 100%);
+            color: #fff;
+        }
+        
+        .hero {
+            padding: 68px 0 32px;
+            background: radial-gradient(circle at top left, rgba(199, 125, 58, 0.10), transparent 20%), radial-gradient(circle at bottom right, rgba(46, 107, 94, 0.12), transparent 26%);
+        }
+        
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 28px;
+            align-items: center;
+        }
+        
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--mute);
+        }
+        
+        .eyebrow::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--teal);
+            box-shadow: 0 0 0 6px rgba(46, 107, 94, 0.12);
+        }
+        
+        h1 {
+            font-size: clamp(2.3rem, 4vw, 3.8rem);
+            letter-spacing: -0.05em;
+            color: var(--navy);
+            margin-top: 18px;
+        }
+        
+        .lead {
+            font-size: 1.06rem;
+            line-height: 1.7;
+            color: var(--mute);
+            margin-top: 16px;
+            max-width: 54ch;
+        }
+        
+        .hero-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(15, 27, 46, 0.07);
+        }
+        
+        .stat:last-child {
+            border-bottom: none;
+        }
+        
+        .stat strong {
+            font-size: 1.1rem;
+            color: var(--navy);
+        }
+        
+        .stat span {
+            color: var(--mute);
+            font-size: 0.9rem;
+        }
+        
+        .section {
+            padding: 40px 0 80px;
+        }
+        
+        .section-head {
+            margin-bottom: 28px;
+        }
+        
+        .section-head h2 {
+            font-size: clamp(1.8rem, 3vw, 2.4rem);
+            letter-spacing: -0.04em;
+            color: var(--navy);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        
+        .card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .image {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(46, 107, 94, 0.1), rgba(199, 125, 58, 0.12));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        
+        .body {
+            padding: 20px;
+        }
+        
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .badge {
+            display: inline-flex;
+            padding: 7px 10px;
+            border-radius: 999px;
+            background: rgba(46, 107, 94, 0.12);
+            color: var(--teal);
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+        
+        .card p {
+            color: var(--mute);
+            margin: 0 0 18px;
+            line-height: 1.6;
+        }
+        
+        .card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-row small {
+            color: var(--mute);
+        }
+        
+        footer {
+            background: var(--navy);
+            color: #dbe0ea;
+            padding: 28px 0 42px;
+        }
+        
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .reservation {
+            padding: 30px 0 80px;
+        }
+        
+        .reservation-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 28px;
+            align-items: center;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .reservation-copy h2 {
+            font-size: clamp(2rem, 3vw, 2.8rem);
+            letter-spacing: -0.05em;
+            margin: 18px 0 12px;
+        }
+        
+        .reservation-copy p {
+            font-size: 1rem;
+            margin-bottom: 18px;
+            color: var(--mute);
+        }
+        
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .contact-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--navy);
+            font-weight: 600;
+        }
+        
+        .contact-item span {
+            display: inline-grid;
+            place-items: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(46, 107, 94, 0.10);
+        }
+        
+        .reservation-form {
+            background: linear-gradient(180deg, rgba(248, 244, 238, 0.8), rgba(255, 255, 255, 0.9));
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 26px;
+        }
+        
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            color: var(--navy);
+            font-weight: 600;
+            font-size: 0.88rem;
+        }
+        
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid rgba(15, 27, 46, 0.12);
+            border-radius: 14px;
+            padding: 12px 14px;
+            font: inherit;
+            background: #fff;
+            color: var(--ink);
+        }
+        
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+        
+        .reservation-form .btn {
+            width: 100%;
+            margin-top: 6px;
+            border: none;
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 100;
+            background: #25D366;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border-radius: 999px;
+            font-weight: 700;
+            box-shadow: 0 16px 30px rgba(37, 211, 102, 0.3);
+        }
+        
+        @media (max-width: 820px) {
+            .hero-inner,
+            .grid,
+            .reservation-grid,
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body data-page="logements">
+    <header>
+        <div class="wrap nav">
+            <div class="logo">SN<span>true</span></div>
+            <nav class="nav-links">
+                <a href="index.html">Accueil</a>
+                <a href="logements.html">Logements</a>
+                <a href="vehicules.html">Véhicules</a>
+            </nav>
+            <a href="index.html" class="btn btn-primary">Retour</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="wrap hero-inner">
+                <div>
+                    <div class="eyebrow">Disponibilités</div>
+                    <h1>Logements disponibles maintenant</h1>
+                    <p class="lead">Trouvez un logement confortable, bien situé et prêt à accueillir votre séjour ou votre mission professionnelle. Nos séjours sont sélectionnés avec soin pour allier confort, sécurité et simplicité.</p>
+                    <div style="margin-top:26px; display:flex; gap:12px; flex-wrap:wrap;">
+                        <a href="index.html" class="btn btn-primary">Voir l'accueil</a>
+                        <a href="vehicules.html" class="btn btn-secondary">Voir les véhicules</a>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="stat">
+                        <div>
+                            <strong>36</strong>
+                            <span>logements actifs</span>
+                        </div>
+                        <span>📍 Centre-ville</span>
+                    </div>
+                    <div class="stat">
+                        <div>
+                            <strong>12</strong>
+                            <span>villas disponibles</span>
+                        </div>
+                        <span>🏡 Premium</span>
+                    </div>
+                    <div class="stat">
+                        <div>
+                            <strong>4.9/5</strong>
+                            <span>note clients</span>
+                        </div>
+                        <span>⭐ Très bien noté</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="wrap">
+                <div class="section-head">
+                    <h2>Nos logements</h2>
+                </div>
+                <div class="grid" data-catalog="logements"></div>
+            </div>
+        </section>
+
+        <section class="reservation" id="reservation">
+            <div class="wrap reservation-grid">
+                <div class="reservation-copy">
+                    <div class="eyebrow" style="margin-bottom: 8px;">Réservation rapide</div>
+                    <h2>Demandez votre logement</h2>
+                    <p>Renseignez vos dates et vos besoins pour recevoir une proposition adaptée à votre séjour.</p>
+                    <div class="contact-list">
+                        <div class="contact-item"><span>📞</span> +228 XX XX XX XX</div>
+                        <div class="contact-item"><span>✉️</span> contact@sntrue.com</div>
+                    </div>
+                </div>
+
+                <form class="reservation-form" action="https://formspree.io/f/your-form-id" method="POST">
+                    <div class="field-row">
+                        <label>
+                            Nom complet
+                            <input type="text" name="name" placeholder="Votre nom" required>
+                        </label>
+                        <label>
+                            Email
+                            <input type="email" name="email" placeholder="votre@email.com" required>
+                        </label>
+                    </div>
+
+                    <div class="field-row">
+                        <label>
+                            Type de logement
+                            <select name="service" required>
+                                <option value="">Sélectionner</option>
+                                <option value="villa">Villa</option>
+                                <option value="appartement">Appartement</option>
+                                <option value="residence">Résidence</option>
+                            </select>
+                        </label>
+                        <label>
+                            Dates
+                            <input type="text" name="dates" placeholder="Ex. 15-20 oct 2026">
+                        </label>
+                    </div>
+
+                    <label>
+                        Message
+                        <textarea name="message" placeholder="Précisez vos attentes..."></textarea>
+                    </label>
+
+                    <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <a class="whatsapp-float" href="https://wa.me/22890000000?text=Bonjour%20SNtrue%2C%20je%20souhaite%20réserver%20un%20logement" target="_blank" rel="noreferrer" aria-label="Contacter sur WhatsApp">WhatsApp</a>
+
+    <footer>
+        <div class="wrap footer-inner">
+            <div>
+                <div class="logo" style="color:#fff;">SN<span>true</span></div>
+            </div>
+            <p>© 2026 SNtrue — Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

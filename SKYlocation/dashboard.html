@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard SNtrue</title>
+    <style>
+         :root {
+            --navy: #0F1B2E;
+            --teal: #2E6B5E;
+            --amber: #C77D3A;
+            --ivory: #F8F4EE;
+            --line: #E7E0D6;
+            --card: #fff;
+            --muted: #5d6773;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #f9f6f0, #f1eae0);
+            color: var(--navy);
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        header {
+            background: rgba(248, 244, 238, 0.9);
+            border-bottom: 1px solid rgba(15, 27, 46, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--teal);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            font-weight: 600;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px;
+            border-radius: 999px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--teal), #5A8C82);
+            color: #fff;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--amber), #E8A15F);
+            color: #fff;
+        }
+        
+        .dashboard-shell {
+            padding: 48px 0 80px;
+        }
+        
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        
+        .panel-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 22px;
+        }
+        
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: 0 18px 30px rgba(15, 27, 46, 0.05);
+            padding: 24px;
+        }
+        
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+        }
+        
+        .muted {
+            color: var(--muted);
+        }
+        
+        form {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        
+        label {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid rgba(15, 27, 46, 0.12);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font: inherit;
+            background: #fff;
+        }
+        
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .list {
+            list-style: none;
+            margin: 20px 0 0;
+            padding: 0;
+            display: grid;
+            gap: 12px;
+        }
+        
+        .list li {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px 14px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            background: #fff;
+        }
+        
+        .list strong {
+            display: block;
+        }
+        
+        .list span {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        
+        .mini-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .mini-btn {
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            padding: 8px 10px;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .mini-btn.edit {
+            background: var(--teal);
+        }
+        
+        .mini-btn.delete {
+            background: #b94848;
+        }
+        
+        .empty-list {
+            color: var(--muted);
+            border-style: dashed;
+        }
+        
+        @media (max-width: 820px) {
+            .panel-grid,
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body data-page="dashboard">
+    <header>
+        <div class="wrap nav">
+            <div class="logo">SN<span>true</span></div>
+            <nav class="nav-links">
+                <a href="index.html">Accueil</a>
+                <a href="logements.html">Logements</a>
+                <a href="vehicules.html">Véhicules</a>
+            </nav>
+            <a href="index.html" class="btn btn-primary">Retour site</a>
+        </div>
+    </header>
+
+    <main class="dashboard-shell">
+        <div class="wrap">
+            <div class="topbar">
+                <div>
+                    <p class="muted">Gestion rapide</p>
+                    <h1>Disponibilités</h1>
+                </div>
+                <a href="index.html" class="btn btn-secondary">Voir le site</a>
+            </div>
+
+            <div class="panel-grid">
+                <section class="panel">
+                    <h2 id="form-title">Ajouter une disponibilité</h2>
+                    <form id="availability-form">
+                        <div class="field-row">
+                            <label>
+                                Type
+                                <select id="type" name="type">
+                                    <option value="logements">Logements</option>
+                                    <option value="vehicules">Véhicules</option>
+                                </select>
+                            </label>
+                            <label>
+                                Identifiant
+                                <input type="hidden" id="item-id" name="item-id">
+                                <input type="text" id="slug-preview" value="Auto" readonly>
+                            </label>
+                        </div>
+
+                        <div class="field-row">
+                            <label>
+                                Nom
+                                <input type="text" id="name" placeholder="Ex. Villa Riviera" required>
+                            </label>
+                            <label>
+                                Catégorie
+                                <input type="text" id="category" placeholder="Ex. Villa / SUV">
+                            </label>
+                        </div>
+
+                        <div class="field-row">
+                            <label>
+                                Prix
+                                <input type="text" id="price" placeholder="Ex. 120€/j">
+                            </label>
+                            <label>
+                                Emoji
+                                <input type="text" id="emoji" placeholder="🏡" maxlength="2">
+                            </label>
+                        </div>
+
+                        <div class="field-row">
+                            <label>
+                                Disponibilité
+                                <input type="text" id="availability" placeholder="Ex. Disponible aujourd'hui" required>
+                            </label>
+                            <label>
+                                Description
+                                <input type="text" id="description" placeholder="Courte description">
+                            </label>
+                        </div>
+
+                        <div class="actions">
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            <button type="button" id="reset-btn" class="btn btn-secondary">Réinitialiser</button>
+                        </div>
+                    </form>
+                </section>
+
+                <aside class="panel">
+                    <h2>Liste actuelle</h2>
+                    <ul class="list" id="item-list"></ul>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
