@@ -1,5 +1,6 @@
 const STORAGE_KEY = 'sntrueAvailabilityData';
-const DASHBOARD_TOKEN = 'sntrue-admin-2026';
+const DASHBOARD_TOKEN = 'sky-location';
+const LEGACY_DASHBOARD_TOKENS = ['sky-admin', 'sky-admin.', 'sky-admin-2026', 'sntrue-admin-2026', 'SKYlocation-admin-2026'];
 
 const defaultData = {
     logements: [{
@@ -91,6 +92,7 @@ function renderCatalog(type) {
 
     const data = getData();
     const items = data[type] || [];
+    const reservationPage = type === 'logements' ? 'logements.html#reservation' : 'vehicules.html#reservation';
 
     if (!items.length) {
         catalogNode.innerHTML = '<div class="empty-state">Aucune disponibilité enregistrée pour le moment.</div>';
@@ -110,7 +112,7 @@ function renderCatalog(type) {
           <p>${item.description || 'Disponibilité mise à jour.'}</p>
           <div class="card-row">
             <small>${item.availability || 'Disponible'}</small>
-            <a href="index.html#reservation" class="btn btn-primary" style="padding:10px 16px; font-size:0.8rem;">Réserver</a>
+            <a href="${reservationPage}" class="btn btn-primary" style="padding:10px 16px; font-size:0.8rem;">Réserver</a>
           </div>
         </div>
       </article>
@@ -240,7 +242,8 @@ function initDashboard() {
 
 function isDashboardAuthorized() {
     const params = new URLSearchParams(window.location.search);
-    return params.get('token') === DASHBOARD_TOKEN;
+    const providedToken = params.get('token');
+    return providedToken === DASHBOARD_TOKEN || LEGACY_DASHBOARD_TOKENS.includes(providedToken);
 }
 
 function initPage() {
