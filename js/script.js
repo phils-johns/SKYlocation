@@ -1,6 +1,6 @@
 const STORAGE_KEY = 'sntrueAvailabilityData';
-const DASHBOARD_TOKEN = 'sky-admin';
-const LEGACY_DASHBOARD_TOKENS = ['sky-admin.', 'sky-admin-2026', 'sntrue-admin-2026', 'SKYlocation-admin-2026'];
+const DASHBOARD_TOKEN = 'sky-location';
+const LEGACY_DASHBOARD_TOKENS = ['sky-admin', 'sky-admin.', 'sky-admin-2026', 'sntrue-admin-2026', 'SKYlocation-admin-2026'];
 
 const defaultData = {
     logements: [{
