@@ -86,6 +86,22 @@ function saveData(data) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
+function refreshPublicPagesFromStorage() {
+    const page = document.body && document.body.dataset && document.body.dataset.page;
+    if (page === 'logements') {
+        renderCatalog('logements');
+    }
+    if (page === 'vehicules') {
+        renderCatalog('vehicules');
+    }
+}
+
+window.addEventListener('storage', function(event) {
+    if (event.key === STORAGE_KEY) {
+        refreshPublicPagesFromStorage();
+    }
+});
+
 function renderCatalog(type) {
     const catalogNode = document.querySelector('[data-catalog="' + type + '"]');
     if (!catalogNode) return;
