@@ -1,13 +1,18 @@
 const STORAGE_KEY = 'sntrueAvailabilityData';
+const DEFAULT_DATA_VERSION_KEY = STORAGE_KEY + ':defaults-version';
+// Incrémenter cette version après avoir ajouté des annonces à defaultData.
+const DEFAULT_DATA_VERSION = 1;
 const DASHBOARD_TOKEN = 'sky-location';
 const LEGACY_DASHBOARD_TOKENS = ['sky-admin', 'sky-admin.', 'sky-admin-2026', 'sntrue-admin-2026', 'SKYlocation-admin-2026'];
 
+// Ajouter les annonces ici et placer chaque image dans le dossier images/ du dépôt.
 const defaultData = {
     logements: [{
             id: 'villa-riviera',
             name: 'Villa Riviera',
             category: 'Villa',
             price: '120€/j',
+            image: 'images/logements/villa-riviera.svg',
             emoji: '🏡',
             availability: 'Disponible 2 jours',
             description: '3 chambres, vue mer, piscine privée, idéal pour un séjour en famille ou un week-end premium.'
@@ -17,6 +22,7 @@ const defaultData = {
             name: 'Appartement Centre',
             category: 'Appartement',
             price: '75€/j',
+            image: 'images/logements/appartement-centre.svg',
             emoji: '🏘️',
             availability: 'Disponible aujourd\'hui',
             description: '2 chambres, cuisine équipée, très bien situé pour les déplacements professionnels et touristiques.'
@@ -26,6 +32,7 @@ const defaultData = {
             name: 'Résidence Palmier',
             category: 'Résidence',
             price: '95€/j',
+            image: 'images/logements/residence-palmier.svg',
             emoji: '🌴',
             availability: 'Disponible 5 jours',
             description: 'Confort moderne, jardin, parking privé et accès rapide aux services de la ville.'
@@ -36,6 +43,7 @@ const defaultData = {
             name: 'Renault Clio',
             category: 'Citadine',
             price: '35€/j',
+            image: 'images/vehicules/renault-clio.svg',
             emoji: '🚘',
             availability: 'Disponible aujourd\'hui',
             description: 'Économique et maniable, idéale pour les trajets urbains et les petites escapades.'
@@ -45,6 +53,7 @@ const defaultData = {
             name: 'Ford SUV',
             category: 'SUV',
             price: '58€/j',
+            image: 'images/vehicules/ford-suv.svg',
             emoji: '🚙',
             availability: 'Disponible 3 jours',
             description: 'Confort, espace et sécurité pour les déplacements famille ou les voyages plus longs.'
@@ -54,6 +63,7 @@ const defaultData = {
             name: 'BMW Série 1',
             category: 'Berline',
             price: '48€/j',
+            image: 'images/vehicules/bmw-serie-1.svg',
             emoji: '🚗',
             availability: 'Disponible 2 jours',
             description: 'Confort premium, conduite agréable et design élégant pour les trajets professionnels.'
@@ -64,18 +74,31 @@ const defaultData = {
 function getData() {
     try {
         const savedData = localStorage.getItem(STORAGE_KEY);
-        if (!savedData) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
-            return JSON.parse(JSON.stringify(defaultData));
+        const data = savedData ? JSON.parse(savedData) : JSON.parse(JSON.stringify(defaultData));
+        if (!data.logements || !data.vehicules) {
+            data.logements = JSON.parse(JSON.stringify(defaultData.logements));
+            data.vehicules = JSON.parse(JSON.stringify(defaultData.vehicules));
         }
 
-        const parsed = JSON.parse(savedData);
-        if (!parsed.logements || !parsed.vehicules) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
-            return JSON.parse(JSON.stringify(defaultData));
+        const savedVersion = Number(localStorage.getItem(DEFAULT_DATA_VERSION_KEY)) || 0;
+        if (savedVersion < DEFAULT_DATA_VERSION) {
+            ['logements', 'vehicules'].forEach(function(type) {
+                const items = Array.isArray(data[type]) ? data[type] : [];
+                defaultData[type].forEach(function(defaultItem) {
+                    const existingItem = items.find(function(item) { return item.id === defaultItem.id; });
+                    if (!existingItem) {
+                        items.push(Object.assign({}, defaultItem));
+                    } else if (!existingItem.image && defaultItem.image) {
+                        existingItem.image = defaultItem.image;
+                    }
+                });
+                data[type] = items;
+            });
+            saveData(data);
+            localStorage.setItem(DEFAULT_DATA_VERSION_KEY, String(DEFAULT_DATA_VERSION));
         }
 
-        return parsed;
+        return data;
     } catch (error) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
         return JSON.parse(JSON.stringify(defaultData));
@@ -116,9 +139,12 @@ function renderCatalog(type) {
     }
 
     catalogNode.innerHTML = items.map(function(item) {
+                const image = item.image ?
+                        `<img src="${item.image}" alt="${item.name}" loading="lazy">` :
+                        `<span aria-hidden="true">${item.emoji || '🏠'}</span>`;
         return `
       <article class="card">
-        <div class="image">${item.emoji || '🏠'}</div>
+                <div class="image">${image}</div>
         <div class="body">
           <div class="meta">
             <span class="badge">${item.category || 'Disponibilité'}</span>
@@ -208,11 +234,14 @@ function initDashboard() {
             const typeValue = typeField.value;
             const selectedTypeList = typeValue === 'logements' ? 'logements' : 'vehicules';
             const data = getData();
+            const itemId = hiddenId.value || (document.getElementById('name').value + '-' + Date.now()).toLowerCase().replace(/[^a-z0-9-]+/g, '-');
+            const existingItem = (data[selectedTypeList] || []).find(function(item) { return item.id === itemId; });
             const values = {
-                id: hiddenId.value || (document.getElementById('name').value + '-' + Date.now()).toLowerCase().replace(/[^a-z0-9-]+/g, '-'),
+                id: itemId,
                 name: document.getElementById('name').value.trim(),
                 category: document.getElementById('category').value.trim() || 'Disponibilité',
                 price: document.getElementById('price').value.trim() || 'Sur demande',
+                image: existingItem ? existingItem.image : '',
                 emoji: document.getElementById('emoji').value.trim() || '🏠',
                 availability: document.getElementById('availability').value.trim() || 'Disponible',
                 description: document.getElementById('description').value.trim() || 'Disponibilité mise à jour.'

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title">
+  <title id="title">Résidence contemporaine entourée de palmiers</title>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#a8d9d3"/><stop offset="1" stop-color="#f2ebd2"/></linearGradient></defs>
+  <rect width="960" height="540" fill="url(#sky)"/><circle cx="760" cy="96" r="42" fill="#eeb66b"/>
+  <path d="M0 351q192-78 375-2t585-6v197H0Z" fill="#85a17a"/><path d="M215 202h525v276H215Z" fill="#f5eee3"/>
+  <path d="m184 215 295-93 296 93v35H184Z" fill="#687e78"/>
+  <path d="M260 250h122v114H260zm164 0h122v114H424zm164 0h122v114H588Z" fill="#84bbc0"/>
+  <path d="M260 381h122v97H260zm164-17h122v114H424zm164 17h122v97H588Z" fill="#d5b78d"/>
+  <path d="M0 459h960v81H0Z" fill="#c6b58e"/><path d="M115 358q-5-110 28-192m-22 86q-81-51-123-20 51 50 126 55m-5-30q63-77 118-57-45 67-118 82m2-44q-46-82-98-77 23 76 100 102" fill="none" stroke="#315e4d" stroke-width="12" stroke-linecap="round"/>
+  <path d="M792 372q-5-85 25-151m-19 68q-54-35-84-13 36 35 86 39m-2-21q44-54 82-41-31 47-84 57" fill="none" stroke="#315e4d" stroke-width="10" stroke-linecap="round"/>
+</svg>

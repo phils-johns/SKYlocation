@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title">
+  <title id="title">Berline élégante en ville</title>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#c5d8df"/><stop offset="1" stop-color="#f2e5d1"/></linearGradient><linearGradient id="paint" x2="0" y2="1"><stop stop-color="#506d98"/><stop offset="1" stop-color="#283c63"/></linearGradient></defs>
+  <rect width="960" height="540" fill="url(#sky)"/><circle cx="773" cy="98" r="42" fill="#f0c579"/>
+  <path d="M0 312h119V175h112v137h61V119h136v193h72V201h125v111h73V149h118v163h144v99H0Z" fill="#71818b"/>
+  <path d="M0 375h960v165H0Z" fill="#d8c9ad"/><path d="M174 352 244 291q26-23 57-24l119-7q34-1 60 22l74 65 55 12q31 7 38 37l5 28H152v-39q0-23 22-33Z" fill="url(#paint)" stroke="#273b5b" stroke-width="7"/>
+  <path d="m286 287 128-7q26-1 45 17l50 48H234Z" fill="#a7cdd3" stroke="#e6e7dd" stroke-width="7"/>
+  <path d="M387 282v68m-197 14h398" stroke="#273b5b" stroke-width="7"/><circle cx="276" cy="418" r="42" fill="#29343a"/><circle cx="276" cy="418" r="21" fill="#dedbd0"/><circle cx="529" cy="418" r="42" fill="#29343a"/><circle cx="529" cy="418" r="21" fill="#dedbd0"/>
+  <path d="M0 473h960v67H0Z" fill="#a79576"/><path d="M75 505h140m130 0h140m130 0h140m130 0h140" stroke="#fbf1df" stroke-width="7" stroke-dasharray="44 24"/>
+</svg>

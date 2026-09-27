@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title">
+  <title id="title">Appartement lumineux en centre-ville</title>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#b7d8e0"/><stop offset="1" stop-color="#f3e5c7"/></linearGradient></defs>
+  <rect width="960" height="540" fill="url(#sky)"/><circle cx="768" cy="105" r="43" fill="#edbd73"/>
+  <path d="M0 307h152V176h118v131h80V117h152v190h87V207h147v100h224v233H0Z" fill="#728995"/>
+  <path d="M0 354h960v186H0Z" fill="#d8c7a7"/><path d="M277 173h405v292H277Z" fill="#f5eee0"/>
+  <path d="M321 220h139v151H321zm178 0h139v151H499Z" fill="#77aeb5"/>
+  <path d="M389 220v151m178-151v151" stroke="#f8f4e9" stroke-width="9"/>
+  <path d="M457 387h46v78h-46Z" fill="#b97951"/><path d="M305 389h350" stroke="#c9b795" stroke-width="8"/>
+  <path d="M0 465h960v75H0Z" fill="#bcaa89"/><path d="M80 400h108v65H80Z" fill="#4f746a"/>
+  <path d="M119 402q-22-68-4-107m3 52q-41-34-66-20 25 34 67 37m0-20q39-41 67-29-21 37-67 45" fill="none" stroke="#41654f" stroke-width="10" stroke-linecap="round"/>
+</svg>

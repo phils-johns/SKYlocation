@@ -236,6 +236,14 @@
             align-items: center;
             justify-content: center;
             font-size: 4rem;
+            overflow: hidden;
+        }
+
+        .image img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .body {
@@ -487,6 +495,7 @@
                 <div class="section-head">
                     <h2>Nos logements</h2>
                 </div>
+                <!-- Les cartes et leurs images sont définies dans js/script.js, dans defaultData.logements. -->
                 <div class="grid" data-catalog="logements"></div>
             </div>
         </section>

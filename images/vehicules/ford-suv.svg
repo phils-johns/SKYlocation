@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title">
+  <title id="title">SUV spacieux sur une route de montagne</title>
+  <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#b8d2d2"/><stop offset="1" stop-color="#eee1c9"/></linearGradient><linearGradient id="paint" x2="0" y2="1"><stop stop-color="#477d75"/><stop offset="1" stop-color="#254f4c"/></linearGradient></defs>
+  <rect width="960" height="540" fill="url(#sky)"/><circle cx="754" cy="99" r="40" fill="#eebc72"/>
+  <path d="m0 316 184-191 122 130 165-190 220 231 100-114 169 154v105H0Z" fill="#718b81"/><path d="m0 370 222-95 183 91 182-114 373 116v172H0Z" fill="#94a080"/>
+  <path d="M164 348 208 265q14-26 49-31l184-5q31-1 52 23l79 88 59 18q27 8 29 37l2 31H135v-45q0-23 29-33Z" fill="url(#paint)" stroke="#203f40" stroke-width="8"/>
+  <path d="m250 267 178-5q23 0 40 19l48 57H218Z" fill="#a9ced0" stroke="#dae8df" stroke-width="7"/>
+  <path d="M365 264v75m-170 17h371" stroke="#203f40" stroke-width="8"/><circle cx="264" cy="415" r="45" fill="#263338"/><circle cx="264" cy="415" r="22" fill="#d9d8cc"/><circle cx="536" cy="415" r="45" fill="#263338"/><circle cx="536" cy="415" r="22" fill="#d9d8cc"/>
+  <path d="M0 470h960v70H0Z" fill="#a39377"/><path d="M88 504h119m128 0h119m128 0h119m128 0h119" stroke="#f5ecd9" stroke-width="7" stroke-dasharray="40 24"/>
+</svg>
