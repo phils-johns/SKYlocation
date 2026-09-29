@@ -1,25 +1,4 @@
 {
     "cleanUrls": true,
-    "trailingSlash": false,
-    "routes": [{
-            "src": "/dashboard",
-            "dest": "/SKYlocation/dashboard.html"
-        },
-        {
-            "src": "/dashboard/(.*)",
-            "dest": "/SKYlocation/dashboard.html"
-        },
-        {
-            "src": "/logements",
-            "dest": "/SKYlocation/logements.html"
-        },
-        {
-            "src": "/vehicules",
-            "dest": "/SKYlocation/vehicules.html"
-        },
-        {
-            "src": "/SKYlocation",
-            "dest": "/SKYlocation/index.html"
-        }
-    ]
+    "trailingSlash": false
 }

@@ -1,9 +1,4 @@
 const STORAGE_KEY = 'sntrueAvailabilityData';
-const DEFAULT_DATA_VERSION_KEY = STORAGE_KEY + ':defaults-version';
-// Incrémenter cette version après avoir ajouté des annonces à defaultData.
-const DEFAULT_DATA_VERSION = 1;
-const DASHBOARD_TOKEN = 'sky-location';
-const LEGACY_DASHBOARD_TOKENS = ['sky-admin', 'sky-admin.', 'sky-admin-2026', 'sntrue-admin-2026', 'SKYlocation-admin-2026'];
 
 // Ajouter les annonces ici et placer chaque image dans le dossier images/ du dépôt.
 const defaultData = {
@@ -79,25 +74,6 @@ function getData() {
             data.logements = JSON.parse(JSON.stringify(defaultData.logements));
             data.vehicules = JSON.parse(JSON.stringify(defaultData.vehicules));
         }
-
-        const savedVersion = Number(localStorage.getItem(DEFAULT_DATA_VERSION_KEY)) || 0;
-        if (savedVersion < DEFAULT_DATA_VERSION) {
-            ['logements', 'vehicules'].forEach(function(type) {
-                const items = Array.isArray(data[type]) ? data[type] : [];
-                defaultData[type].forEach(function(defaultItem) {
-                    const existingItem = items.find(function(item) { return item.id === defaultItem.id; });
-                    if (!existingItem) {
-                        items.push(Object.assign({}, defaultItem));
-                    } else if (!existingItem.image && defaultItem.image) {
-                        existingItem.image = defaultItem.image;
-                    }
-                });
-                data[type] = items;
-            });
-            saveData(data);
-            localStorage.setItem(DEFAULT_DATA_VERSION_KEY, String(DEFAULT_DATA_VERSION));
-        }
-
         return data;
     } catch (error) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
@@ -107,6 +83,45 @@ function getData() {
 
 function saveData(data) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(character) {
+        return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[character];
+    });
+}
+
+async function loadAvailability() {
+    const response = await fetch('/data/availability.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error('Impossible de charger les disponibilités du dépôt.');
+
+    const data = await response.json();
+    if (!data || !Array.isArray(data.logements) || !Array.isArray(data.vehicules)) {
+        throw new Error('Le fichier de disponibilités du dépôt est invalide.');
+    }
+
+    saveData(data);
+}
+
+async function persistData(data) {
+    const response = await fetch('/api/availability', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    const result = response.status === 204 ? {} : await response.json();
+    if (!response.ok) throw new Error(result.error || 'La mise à jour GitHub a échoué.');
+
+    saveData(data);
 }
 
 function refreshPublicPagesFromStorage() {
@@ -140,20 +155,20 @@ function renderCatalog(type) {
 
     catalogNode.innerHTML = items.map(function(item) {
                 const image = item.image ?
-                        `<img src="${item.image}" alt="${item.name}" loading="lazy">` :
-                        `<span aria-hidden="true">${item.emoji || '🏠'}</span>`;
+                                                `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy">` :
+                                                `<span aria-hidden="true">${escapeHtml(item.emoji || '🏠')}</span>`;
         return `
       <article class="card">
                 <div class="image">${image}</div>
         <div class="body">
           <div class="meta">
-            <span class="badge">${item.category || 'Disponibilité'}</span>
-            <span class="price">${item.price || 'Sur demande'}</span>
+                        <span class="badge">${escapeHtml(item.category || 'Disponibilité')}</span>
+                        <span class="price">${escapeHtml(item.price || 'Sur demande')}</span>
           </div>
-          <h3>${item.name}</h3>
-          <p>${item.description || 'Disponibilité mise à jour.'}</p>
+                    <h3>${escapeHtml(item.name)}</h3>
+                    <p>${escapeHtml(item.description || 'Disponibilité mise à jour.')}</p>
           <div class="card-row">
-            <small>${item.availability || 'Disponible'}</small>
+                        <small>${escapeHtml(item.availability || 'Disponible')}</small>
             <a href="${reservationPage}" class="btn btn-primary" style="padding:10px 16px; font-size:0.8rem;">Réserver</a>
           </div>
         </div>
@@ -179,12 +194,12 @@ function initDashboard() {
             return `
         <li>
           <div>
-            <strong>${item.name}</strong>
-            <span>${item.availability}</span>
+                        <strong>${escapeHtml(item.name)}</strong>
+                        <span>${escapeHtml(item.availability)}</span>
           </div>
           <div class="mini-actions">
-            <button type="button" class="mini-btn edit" data-edit="${item.id}">Modifier</button>
-            <button type="button" class="mini-btn delete" data-delete="${item.id}">Supprimer</button>
+                        <button type="button" class="mini-btn edit" data-edit="${escapeHtml(item.id)}">Modifier</button>
+                        <button type="button" class="mini-btn delete" data-delete="${escapeHtml(item.id)}">Supprimer</button>
           </div>
         </li>
       `;
@@ -209,13 +224,19 @@ function initDashboard() {
         });
 
         document.querySelectorAll('[data-delete]').forEach(function(button) {
-            button.addEventListener('click', function() {
+                button.addEventListener('click', async function() {
                 const id = button.getAttribute('data-delete');
                 const dataSet = getData();
                 dataSet[selectedType] = (dataSet[selectedType] || []).filter(function(item) { return item.id !== id; });
-                saveData(dataSet);
+                    try {
+                        await persistData(dataSet);
+                    } catch (error) {
+                        document.getElementById('save-status').textContent = error.message;
+                        return;
+                    }
                 renderDashboardList();
                 renderCatalog(selectedType);
+                    document.getElementById('save-status').textContent = 'Suppression commitée dans GitHub.';
             });
         });
     }
@@ -228,11 +249,10 @@ function initDashboard() {
     }
 
     if (form) {
-        form.addEventListener('submit', function(event) {
+        form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            const typeValue = typeField.value;
-            const selectedTypeList = typeValue === 'logements' ? 'logements' : 'vehicules';
+            const selectedTypeList = typeField.value === 'logements' ? 'logements' : 'vehicules';
             const data = getData();
             const itemId = hiddenId.value || (document.getElementById('name').value + '-' + Date.now()).toLowerCase().replace(/[^a-z0-9-]+/g, '-');
             const existingItem = (data[selectedTypeList] || []).find(function(item) { return item.id === itemId; });
@@ -259,22 +279,38 @@ function initDashboard() {
             }
 
             data[selectedTypeList] = currentList;
-            saveData(data);
+            const saveStatus = document.getElementById('save-status');
+            saveStatus.textContent = 'Enregistrement dans GitHub…';
+            try {
+                await persistData(data);
+            } catch (error) {
+                saveStatus.textContent = error.message;
+                return;
+            }
             renderCatalog(selectedTypeList);
             renderDashboardList();
             form.reset();
             hiddenId.value = '';
             formTitle.textContent = 'Ajouter une disponibilité';
+            saveStatus.textContent = 'Modifications commitées dans GitHub.';
         });
     }
 
     if (resetBtn) {
-        resetBtn.addEventListener('click', function() {
-            saveData(JSON.parse(JSON.stringify(defaultData)));
+        resetBtn.addEventListener('click', async function() {
+            const saveStatus = document.getElementById('save-status');
+            saveStatus.textContent = 'Restauration des données par défaut dans GitHub…';
+            try {
+                await persistData(JSON.parse(JSON.stringify(defaultData)));
+            } catch (error) {
+                saveStatus.textContent = error.message;
+                return;
+            }
             renderCatalog('logements');
             renderCatalog('vehicules');
             renderDashboardList();
             resetForm();
+            saveStatus.textContent = 'Données par défaut restaurées dans GitHub.';
         });
     }
 
@@ -285,14 +321,56 @@ function initDashboard() {
     renderDashboardList();
 }
 
-function isDashboardAuthorized() {
-    const params = new URLSearchParams(window.location.search);
-    const providedToken = params.get('token');
-    return providedToken === DASHBOARD_TOKEN || LEGACY_DASHBOARD_TOKENS.includes(providedToken);
+async function hasDashboardAccess() {
+    const response = await fetch('/api/availability', {
+        method: 'POST'
+    });
+    return response.ok;
 }
 
-function initPage() {
+function initDashboardAccess() {
+    const login = document.getElementById('dashboard-login-form');
+    const loginStatus = document.getElementById('login-status');
+    const loginPanel = document.getElementById('dashboard-login');
+    const dashboard = document.getElementById('dashboard-content');
+    const logoutButton = document.getElementById('logout-btn');
+    const authStatus = new URLSearchParams(window.location.search).get('auth');
+
+    async function unlockDashboard() {
+        loginStatus.textContent = 'Vérification de l’accès…';
+        try {
+            if (!await hasDashboardAccess()) throw new Error('Connectez-vous avec un compte autorisé à modifier ce dépôt.');
+            loginPanel.hidden = true;
+            dashboard.hidden = false;
+            logoutButton.hidden = false;
+            initDashboard();
+        } catch (error) {
+            if (authStatus === 'forbidden') {
+                loginStatus.textContent = 'Ce compte GitHub ne peut pas modifier ce dépôt.';
+            } else if (authStatus === 'denied') {
+                loginStatus.textContent = 'La connexion GitHub a échoué ou a été annulée.';
+            } else {
+                loginStatus.textContent = error.message;
+            }
+        }
+    }
+
+    logoutButton.addEventListener('click', async function() {
+        await fetch('/api/auth', { method: 'POST' });
+        window.location.href = '/dashboard';
+    });
+
+    unlockDashboard();
+}
+
+async function initPage() {
     const page = document.body.dataset.page;
+
+    try {
+        await loadAvailability();
+    } catch (error) {
+        console.error(error);
+    }
 
     if (page === 'logements') {
         renderCatalog('logements');
@@ -303,22 +381,7 @@ function initPage() {
     }
 
     if (page === 'dashboard') {
-        if (!isDashboardAuthorized()) {
-            const dashboardContent = document.getElementById('dashboard-content');
-            if (dashboardContent) {
-                dashboardContent.innerHTML = `
-                    <div class="wrap" style="padding-top:80px; padding-bottom:80px;">
-                        <div class="panel" style="max-width:640px; margin:0 auto; text-align:center;">
-                            <h2 style="margin-bottom:12px;">Accès restreint</h2>
-                            <p class="muted" style="margin-bottom:18px;">Cette page est réservée à l’administration.</p>
-                            <a href="index.html" class="btn btn-primary">Retour au site</a>
-                        </div>
-                    </div>
-                `;
-            }
-            return;
-        }
-        initDashboard();
+        initDashboardAccess();
     }
 }
 
