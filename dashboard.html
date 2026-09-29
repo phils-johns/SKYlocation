@@ -94,15 +94,6 @@
             padding: 48px 0 80px;
         }
 
-        .login-shell {
-            padding: 72px 0 96px;
-        }
-
-        .login-panel {
-            max-width: 480px;
-            margin: 0 auto;
-        }
-        
         .topbar {
             display: flex;
             justify-content: space-between;
@@ -227,10 +218,6 @@
             background: var(--teal);
         }
         
-        .mini-btn.delete {
-            background: #b94848;
-        }
-        
         .empty-list {
             color: var(--muted);
             border-style: dashed;
@@ -262,25 +249,11 @@
                 <a href="logements.html">Logements</a>
                 <a href="vehicules.html">Véhicules</a>
             </nav>
-            <div class="actions">
-                <button type="button" id="logout-btn" class="btn btn-secondary" hidden>Déconnexion</button>
-                <a href="index.html" class="btn btn-primary">Retour site</a>
-            </div>
+            <a href="index.html" class="btn btn-primary">Retour site</a>
         </div>
     </header>
 
-    <section class="login-shell" id="dashboard-login">
-        <div class="wrap">
-            <div class="panel login-panel">
-                <h1>Administration</h1>
-                <p class="muted" style="margin: 10px 0 20px;">Connectez-vous avec un compte GitHub autorisé à modifier ce dépôt.</p>
-                <a href="/api/auth" class="btn btn-primary">Se connecter avec GitHub</a>
-                <p id="login-status" role="status" aria-live="polite"></p>
-            </div>
-        </div>
-    </section>
-
-    <main class="dashboard-shell" id="dashboard-content" hidden>
+    <main class="dashboard-shell">
         <div class="wrap">
             <div class="topbar">
                 <div>
@@ -292,7 +265,8 @@
 
             <div class="panel-grid">
                 <section class="panel">
-                    <h2 id="form-title">Ajouter une disponibilité</h2>
+                    <h2 id="form-title">Modifier une disponibilité</h2>
+                    <p class="muted">Les modifications restent dans ce navigateur.</p>
                     <p id="save-status" role="status" aria-live="polite"></p>
                     <form id="availability-form">
                         <div class="field-row">
